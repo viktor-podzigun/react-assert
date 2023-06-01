@@ -5,26 +5,29 @@ import assert from "node:assert/strict";
  * @param { import('react').ReactElement | string } expectedElement
  */
 function assertComponent(result, expectedElement) {
-  assertComponentImpl(
-    typeof expectedElement === "string"
-      ? expectedElement
-      : Object(expectedElement.type).toString(),
-    result,
-    expectedElement
-  );
+  assertComponentImpl("", result, expectedElement);
 }
 
 /**
- * @param { string } name
+ * @param { string } path
  * @param { import('./assertComponent').TestInstance | string } result
  * @param { import('./assertComponent').TestInstance | string } expectedElement
  */
-function assertComponentImpl(name, result, expectedElement) {
+function assertComponentImpl(path, result, expectedElement) {
+  const name =
+    typeof expectedElement === "string"
+      ? expectedElement
+      : expectedElement.type.displayName
+      ? expectedElement.type.displayName
+      : expectedElement.type;
+
+  const pathName = path ? `${path} > ${name}` : Object(name).toString();
+
   if (typeof result === "string" || typeof expectedElement === "string") {
     assert.deepEqual(
       result,
       expectedElement,
-      `Elements doesn't match for ${name}` +
+      `Element doesn't match for ${pathName}` +
         `\n\tactual:   ${result}` +
         `\n\texpected: ${expectedElement}`
     );
@@ -34,7 +37,7 @@ function assertComponentImpl(name, result, expectedElement) {
   assert.deepEqual(
     result.type,
     expectedElement.type,
-    `Components types doesn't match for ${name}` +
+    `Component type doesn't match for ${pathName}` +
       `\n\tactual:   ${
         result.type.displayName ? result.type.displayName : result.type
       }` +
@@ -47,15 +50,15 @@ function assertComponentImpl(name, result, expectedElement) {
 
   Object.keys(expectedElement.props)
     .filter((p) => {
-      return p != "children" && p != "assertWrapped" && p != "assertPlain";
+      return p != "children";
     })
     .forEach((attr) => {
       const resultValue = result.props[attr];
       const expectedValue = expectedElement.props[attr];
       if (typeof expectedValue === "object" && !Array.isArray(expectedValue)) {
-        assertObject(`${name}.${attr}`, resultValue, expectedValue);
+        assertObject(`${pathName}.${attr}`, resultValue, expectedValue);
       } else {
-        assertAttrValue(`${name}.${attr}`, resultValue, expectedValue);
+        assertAttrValue(`${pathName}.${attr}`, resultValue, expectedValue);
       }
     });
 
@@ -73,20 +76,20 @@ function assertComponentImpl(name, result, expectedElement) {
           : Object(child.type).toString();
       });
       assert.fail(
-        `Expected no children for ${name}, but got: ${resultChildren}`
+        `Expected no children for ${pathName}, but got: ${resultChildren}`
       );
     }
   } else {
     assert.deepEqual(
       children.length,
       expectedChildren.length,
-      `Children count doesn't match for ${name}` +
+      `Children count doesn't match for ${pathName}` +
         `\n\tactual:   ${children.length}` +
         `\n\texpected: ${expectedChildren.length}`
     );
 
     expectedChildren.forEach((expected, i) => {
-      assertComponentImpl(name, children[i], expected);
+      assertComponentImpl(pathName, children[i], expected);
     });
   }
 }

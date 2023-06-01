@@ -114,16 +114,16 @@ describe("assertComponent.test.mjs", () => {
     //then
     assert.deepEqual(
       resError?.message,
-      "Elements doesn't match for p" +
+      "Element doesn't match for p > comp2" +
         "\n\tactual:   comp" +
         "\n\texpected: comp2"
     );
   });
 
-  it("should fail if child types doesn't match", () => {
+  it("should fail if root element doesn't match", () => {
     //given
     const Comp = () => {
-      return h("p", {}, h("comp"));
+      return h("comp");
     };
     const comp = TestRenderer.create(h(Comp)).root.children[0];
     /** @type {Error?} */
@@ -131,7 +131,7 @@ describe("assertComponent.test.mjs", () => {
 
     //when
     try {
-      assertComponent(comp, h("p", {}, h("comp2")));
+      assertComponent(comp, h("comp2"));
     } catch (error) {
       resError = error;
     }
@@ -139,7 +139,7 @@ describe("assertComponent.test.mjs", () => {
     //then
     assert.deepEqual(
       resError?.message,
-      "Components types doesn't match for p" +
+      "Component type doesn't match for comp2" +
         "\n\tactual:   comp" +
         "\n\texpected: comp2"
     );
@@ -164,7 +164,7 @@ describe("assertComponent.test.mjs", () => {
     //then
     assert.deepEqual(
       resError?.message,
-      "Components types doesn't match for p" +
+      "Component type doesn't match for p > TestComp2" +
         "\n\tactual:   TestComp" +
         "\n\texpected: TestComp2"
     );
@@ -173,7 +173,7 @@ describe("assertComponent.test.mjs", () => {
   it("should fail if non-empty", () => {
     //given
     const Comp = () => {
-      return h("p", {}, h(TestComp));
+      return h("p", {}, "test_text", h("div"), h(TestComp));
     };
     const comp = TestRenderer.create(h(Comp)).root.children[0];
     /** @type {Error?} */
@@ -189,7 +189,7 @@ describe("assertComponent.test.mjs", () => {
     //then
     assert.deepEqual(
       resError?.message,
-      "Expected no children for p, but got: TestComp"
+      "Expected no children for p, but got: test_text,div,TestComp"
     );
   });
 
