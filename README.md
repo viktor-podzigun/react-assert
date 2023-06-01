@@ -19,9 +19,44 @@ npm i --save-dev react-assert
 
 ### Usage
 
-Imports:
-
 ```javascript
+import React from "react";
 import TestRenderer from "react-test-renderer";
-import { assertComponent } from "react-assert";
+
+// 1. import
+import { assertComponents } from "react-assert";
+
+function MyComponent(props) {
+  return (
+    <div>
+      <SubComponent />
+      <p className="my">{props.text}</p>
+    </div>
+  );
+}
+MyComponent.displayName = "MyComponent";
+
+function SubComponent() {
+  return <p className="sub">Sub</p>;
+}
+
+describe("MyComponent", () => {
+  it("should render component", () => {
+    //given
+    const text = "Hello";
+
+    //when
+    const result = TestRenderer.create(<MyComponent text={text} />).root;
+
+    //then
+    // 2. call it with result.children and expected components tree
+    assertComponents(
+      result.children,
+      <div>
+        <p className="sub">Sub</p>
+        <p className="my">{text}</p>
+      </div>
+    );
+  });
+});
 ```

@@ -34,5 +34,6 @@
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     // "emitDeclarationOnly": true,
+    "jsx": "react"
   }
 }
