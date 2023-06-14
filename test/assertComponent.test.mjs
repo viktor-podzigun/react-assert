@@ -68,6 +68,35 @@ describe("assertComponent.test.mjs", () => {
     );
   });
 
+  it("should fail if function attribute doesn't match", () => {
+    //given
+    const Comp = () => {
+      return h("p", {
+        testObj: {
+          test: () => 1,
+        },
+      });
+    };
+    const comp = TestRenderer.create(h(Comp)).root.children[0];
+    /** @type {Error?} */
+    let resError = null;
+
+    //when
+    try {
+      assertComponent(comp, h("p", { testObj: { test: undefined } }));
+    } catch (error) {
+      resError = error;
+    }
+
+    //then
+    assert.deepEqual(
+      resError?.message,
+      "Attribute value doesn't match for p.testObj.test" +
+        "\n\tactual:   () => 1" +
+        "\n\texpected: undefined"
+    );
+  });
+
   it("should fail if boolean attribute doesn't match", () => {
     //given
     const Comp = () => {
@@ -205,6 +234,9 @@ describe("assertComponent.test.mjs", () => {
           id: id,
           hidden: true,
           height: 10,
+          arr: [1, 2],
+          test: undefined,
+          onPress: () => 1,
         },
         h("div", {
           testArr: ["test"],
@@ -212,6 +244,8 @@ describe("assertComponent.test.mjs", () => {
             test: 1,
             nested: {
               test2: 2,
+              arr2: [1, 2],
+              onPress2: () => 1,
             },
           },
         }),
@@ -232,6 +266,9 @@ describe("assertComponent.test.mjs", () => {
           id: id,
           hidden: true,
           height: 10,
+          arr: [1, 2],
+          test: undefined,
+          onPress: () => 2, // functions could differ !!!
         },
         h("div", {
           testArr: ["test"],
@@ -239,6 +276,8 @@ describe("assertComponent.test.mjs", () => {
             test: 1,
             nested: {
               test2: 2,
+              arr2: [1, 2],
+              onPress2: () => 2, // functions could differ !!!
             },
           },
         }),

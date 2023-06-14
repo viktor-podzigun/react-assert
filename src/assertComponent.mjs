@@ -57,6 +57,8 @@ function assertComponentImpl(path, result, expectedElement) {
       const expectedValue = expectedElement.props[attr];
       if (typeof expectedValue === "object" && !Array.isArray(expectedValue)) {
         assertObject(`${pathName}.${attr}`, resultValue, expectedValue);
+      } else if (typeof expectedValue === "function") {
+        // functions could differ !!!
       } else {
         assertAttrValue(`${pathName}.${attr}`, resultValue, expectedValue);
       }
@@ -112,8 +114,10 @@ function assertObject(name, resultValue, expectedObject) {
     expectedKeys.forEach((key) => {
       const resultValue = resultObject[key];
       const expectedValue = expectedObject[key];
-      if (typeof expectedValue === "object") {
+      if (typeof expectedValue === "object" && !Array.isArray(expectedValue)) {
         assertObject(`${name}.${key}`, resultValue, expectedValue);
+      } else if (typeof expectedValue === "function") {
+        // functions could differ !!!
       } else {
         assertAttrValue(`${name}.${key}`, resultValue, expectedValue);
       }
