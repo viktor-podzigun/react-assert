@@ -24,24 +24,28 @@ import React from "react";
 import TestRenderer from "react-test-renderer";
 
 // 1. import
-import { assertComponents } from "react-assert";
+import { assertComponents, mockComponent } from "react-assert";
+
+function SubComponent() {
+  return <p className="sub">Sub</p>;
+}
+SubComponent.displayName = "SubComponent";
 
 function MyComponent(props) {
+  const { SubComp } = MyComponent;
+
   return (
     <div>
-      <SubComponent />
+      <SubComp />
       <p className="my">{props.text}</p>
     </div>
   );
 }
 MyComponent.displayName = "MyComponent";
-
-function SubComponent() {
-  return <p className="sub">Sub</p>;
-}
+MyComponent.SubComp = SubComponent;
 
 describe("MyComponent", () => {
-  it("should render component", () => {
+  it("should render nested components", () => {
     //given
     const text = "Hello";
 
@@ -49,11 +53,31 @@ describe("MyComponent", () => {
     const result = TestRenderer.create(<MyComponent text={text} />).root;
 
     //then
-    // 2. call it with result.children and expected components tree
+    // 2. call assertComponents to check expected components tree
     assertComponents(
       result.children,
       <div>
         <p className="sub">Sub</p>
+        <p className="my">{text}</p>
+      </div>
+    );
+  });
+
+  it("should render mock components", () => {
+    //given
+    // 3. use mockComponent to mock nested components
+    MyComponent.SubComp = mockComponent(SubComponent);
+    const { SubComp } = MyComponent;
+    const text = "Hello";
+
+    //when
+    const result = TestRenderer.create(<MyComponent text={text} />).root;
+
+    //then
+    assertComponents(
+      result.children,
+      <div>
+        <SubComp />
         <p className="my">{text}</p>
       </div>
     );
