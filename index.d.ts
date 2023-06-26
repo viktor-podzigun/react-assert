@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import TestRenderer from "react-test-renderer";
 
 export function assertComponent(
@@ -14,3 +14,9 @@ export function assertComponents(
 export function mockComponent<
   T = React.FunctionComponent<any> | React.ComponentClass<any>
 >(comp: T, name?: string): T;
+
+interface State {
+  error?: object;
+}
+
+export class TestErrorBoundary extends Component<any, State> {}

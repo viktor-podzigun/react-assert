@@ -19,13 +19,24 @@ npm i --save-dev react-assert
 
 ### Usage
 
+Imports:
+
 ```javascript
 import React from "react";
 import TestRenderer from "react-test-renderer";
+import assert from "node:assert/strict";
+import mockFunction from "mock-fn";
 
-// 1. import
-import { assertComponents, mockComponent } from "react-assert";
+import {
+  assertComponents,
+  mockComponent,
+  TestErrorBoundary,
+} from "react-assert";
+```
 
+Components:
+
+```javascript
 function SubComponent() {
   return <p className="sub">Sub</p>;
 }
@@ -43,7 +54,11 @@ function MyComponent(props) {
 }
 MyComponent.displayName = "MyComponent";
 MyComponent.SubComp = SubComponent;
+```
 
+Tests:
+
+```javascript
 describe("MyComponent", () => {
   it("should render nested components", () => {
     //given
@@ -53,7 +68,7 @@ describe("MyComponent", () => {
     const result = TestRenderer.create(<MyComponent text={text} />).root;
 
     //then
-    // 2. call assertComponents to check expected components tree
+    // call assertComponents to check expected components tree
     assertComponents(
       result.children,
       <div>
@@ -65,7 +80,7 @@ describe("MyComponent", () => {
 
   it("should render mock components", () => {
     //given
-    // 3. use mockComponent to mock nested components
+    // use mockComponent to mock nested components
     MyComponent.SubComp = mockComponent(SubComponent);
     const { SubComp } = MyComponent;
     const text = "Hello";
@@ -81,6 +96,34 @@ describe("MyComponent", () => {
         <p className="my">{text}</p>
       </div>
     );
+  });
+
+  it("should render error details if error during render", () => {
+    //given
+    // suppress intended error
+    // see: https://github.com/facebook/react/issues/11098#issuecomment-412682721
+    const savedConsoleError = console.error;
+    const consoleErrorMock = mockFunction(() => {
+      console.error = savedConsoleError;
+    });
+    console.error = consoleErrorMock;
+
+    const ErrorComp = () => {
+      throw Error("test error");
+      return <>{"Not rendered"}</>;
+    };
+
+    //when
+    const result = TestRenderer.create(
+      <TestErrorBoundary>
+        <ErrorComp />
+      <TestErrorBoundary/>
+    ).root;
+
+    //then
+    assert.deepEqual(consoleErrorMock.times, 1);
+    assert.deepEqual(console.error, savedConsoleError);
+    assertComponents(result.children, <div>{"Error: test error"}</div>);
   });
 });
 ```
