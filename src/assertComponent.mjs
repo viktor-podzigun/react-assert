@@ -55,13 +55,7 @@ function assertComponentImpl(path, result, expectedElement) {
     .forEach((attr) => {
       const resultValue = result.props[attr];
       const expectedValue = expectedElement.props[attr];
-      if (typeof expectedValue === "object" && !Array.isArray(expectedValue)) {
-        assertObject(`${pathName}.${attr}`, resultValue, expectedValue);
-      } else if (typeof expectedValue === "function") {
-        // functions could differ !!!
-      } else {
-        assertAttrValue(`${pathName}.${attr}`, resultValue, expectedValue);
-      }
+      assertAny(`${pathName}.${attr}`, resultValue, expectedValue);
     });
 
   const children = getComponentChildren(result);
@@ -97,30 +91,59 @@ function assertComponentImpl(path, result, expectedElement) {
 }
 
 /**
- *
+ * @param {string} name
+ * @param {any} resultValue
+ * @param {any} expectedValue
+ */
+function assertAny(name, resultValue, expectedValue) {
+  if (typeof expectedValue === "object") {
+    if (Array.isArray(expectedValue)) {
+      assertArray(name, resultValue, expectedValue);
+    } else {
+      assertObject(name, resultValue, expectedValue);
+    }
+  } else if (typeof expectedValue === "function") {
+    // functions could differ !!!
+  } else {
+    assertAttrValue(name, resultValue, expectedValue);
+  }
+}
+
+/**
+ * @param {string} name
+ * @param {any} resultArray
+ * @param {any[]} expectedArray
+ */
+function assertArray(name, resultArray, expectedArray) {
+  assertAttrValue(`${name}.isArray`, Array.isArray(resultArray), true);
+  assertAttrValue(`${name}.length`, resultArray.length, expectedArray.length);
+
+  if (resultArray !== expectedArray) {
+    expectedArray.forEach((expectedValue, index) => {
+      const resultValue = resultArray[index];
+      assertAny(`${name}.${index}`, resultValue, expectedValue);
+    });
+  }
+}
+
+/**
  * @param {string} name
  * @param {any} resultValue
  * @param {any} expectedObject
  */
 function assertObject(name, resultValue, expectedObject) {
-  assertAttrValue(name, typeof resultValue, "object");
+  assertAttrValue(`${name}.typeof`, typeof resultValue, "object");
 
   if (resultValue !== expectedObject) {
     const resultObject = resultValue;
     const resultKeys = new Set(Object.keys(resultObject));
     const expectedKeys = new Set(Object.keys(expectedObject));
-    assertAttrValue(name, resultKeys, expectedKeys);
+    assertAttrValue(`${name}.keys`, resultKeys, expectedKeys);
 
     expectedKeys.forEach((key) => {
       const resultValue = resultObject[key];
       const expectedValue = expectedObject[key];
-      if (typeof expectedValue === "object" && !Array.isArray(expectedValue)) {
-        assertObject(`${name}.${key}`, resultValue, expectedValue);
-      } else if (typeof expectedValue === "function") {
-        // functions could differ !!!
-      } else {
-        assertAttrValue(`${name}.${key}`, resultValue, expectedValue);
-      }
+      assertAny(`${name}.${key}`, resultValue, expectedValue);
     });
   }
 }

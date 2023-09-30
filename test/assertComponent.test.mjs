@@ -35,9 +35,9 @@ describe("assertComponent.test.mjs", () => {
     //then
     assert.deepEqual(
       resError?.message,
-      "Attribute value doesn't match for p.testArr" +
-        "\n\tactual:   test1,test2" +
-        "\n\texpected: test2,test1"
+      "Attribute value doesn't match for p.testArr.0" +
+        "\n\tactual:   test1" +
+        "\n\texpected: test2"
     );
   });
 
@@ -241,7 +241,9 @@ describe("assertComponent.test.mjs", () => {
           onPress: () => 1,
         },
         h("div", {
-          testArr: ["test"],
+          emptyArr: [],
+          simpleArr: ["test1", "test2"],
+          objectArr: [{ a: "test", f: () => {} }],
           testObj: {
             test: 1,
             nested: {
@@ -273,7 +275,9 @@ describe("assertComponent.test.mjs", () => {
           onPress: () => 2, // functions could differ !!!
         },
         h("div", {
-          testArr: ["test"],
+          emptyArr: [],
+          simpleArr: ["test1", "test2"],
+          objectArr: [{ a: "test", f: () => {} }],
           testObj: {
             test: 1,
             nested: {
