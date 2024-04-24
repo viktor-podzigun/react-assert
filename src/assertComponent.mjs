@@ -9,9 +9,17 @@ function assertComponent(result, expectedElement) {
 }
 
 /**
+ * @typedef {{
+ *  type: any;
+ *  props: { [propName: string]: any };
+ *  children?: Array<TestInstance | string>;
+ * }} TestInstance
+ */
+
+/**
  * @param { string } path
- * @param { import('./assertComponent').TestInstance | string } result
- * @param { import('./assertComponent').TestInstance | string } expectedElement
+ * @param { TestInstance | string } result
+ * @param { TestInstance | string } expectedElement
  */
 function assertComponentImpl(path, result, expectedElement) {
   const name =
@@ -164,8 +172,8 @@ function assertAttrValue(name, resultValue, expectedValue) {
 }
 
 /**
- * @param {import('./assertComponent').TestInstance} result
- * @returns {(import('./assertComponent').TestInstance | string)[]}
+ * @param {TestInstance} result
+ * @returns {(TestInstance | string)[]}
  */
 function getComponentChildren(result) {
   // in case of ReactElement get children from props

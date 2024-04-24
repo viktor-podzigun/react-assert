@@ -6,12 +6,12 @@
   "description": "Make your React.js rendering predictable",
   "scripts": {
     "test": "tsc && bun test && node ./test/all.mjs",
-    "format": "prettier **/*.mjs **/*.ts --write",
-    "formatCheck": "prettier **/*.mjs **/*.ts --check"
+    "format": "prettier **/*.mjs **/*.mts --write",
+    "formatCheck": "prettier **/*.mjs **/*.mts --check"
   },
   "type": "module",
   "exports": "./index.mjs",
-  "types": "./index.d.ts",
+  "types": "./index.d.mts",
   "private": false,
   "publishConfig": {
     "access": "public"
