@@ -209,6 +209,56 @@ describe("assertComponent.test.mjs", () => {
     );
   });
 
+  it("should fail if children count doesn't match", () => {
+    //given
+    const Comp = () => {
+      return h("p", {}, h("hr", {}, h("div")));
+    };
+    const comp = TestRenderer.create(h(Comp)).root.children[0];
+    /** @type {Error?} */
+    let resError = null;
+
+    //when
+    try {
+      assertComponent(comp, h("p", {}, h("hr", {}, h("div"), h("div"))));
+    } catch (error) {
+      resError = error;
+    }
+
+    //then
+    assert.deepEqual(
+      resError?.message,
+      "Children count doesn't match for p > hr" +
+        "\n\tactual:   1" +
+        "\n\texpected: 2"
+    );
+  });
+
+  it("should fail if empty", () => {
+    //given
+    const Comp = () => {
+      return h("p");
+    };
+    const comp = TestRenderer.create(h(Comp)).root.children[0];
+    /** @type {Error?} */
+    let resError = null;
+
+    //when
+    try {
+      assertComponent(comp, h("p", {}, h(TestComp)));
+    } catch (error) {
+      resError = error;
+    }
+
+    //then
+    assert.deepEqual(
+      resError?.message,
+      "Children count doesn't match for p" +
+        "\n\tactual:   0" +
+        "\n\texpected: 1"
+    );
+  });
+
   it("should fail if non-empty", () => {
     //given
     const Comp = () => {
@@ -232,7 +282,7 @@ describe("assertComponent.test.mjs", () => {
     );
   });
 
-  it("should assert props and children", () => {
+  it("should assert props and simple children", () => {
     //given
     const id = Date.now.toString();
     const Comp = () => {
