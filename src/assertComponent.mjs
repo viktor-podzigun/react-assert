@@ -32,29 +32,29 @@ function assertComponentImpl(path, result, expectedElement) {
   const pathName = path ? `${path} > ${name}` : Object(name).toString();
 
   if (typeof result === "string" || typeof expectedElement === "string") {
-    assert.deepEqual(
-      result,
-      expectedElement,
-      `Element doesn't match for ${pathName}` +
-        `\n\tactual:   ${result}` +
-        `\n\texpected: ${expectedElement}`
-    );
+    if (result !== expectedElement) {
+      assert.fail(
+        `Element doesn't match for ${pathName}` +
+          `\n\tactual:   ${result}` +
+          `\n\texpected: ${expectedElement}`
+      );
+    }
     return;
   }
 
-  assert.deepEqual(
-    result.type,
-    expectedElement.type,
-    `Component type doesn't match for ${pathName}` +
-      `\n\tactual:   ${
-        result.type.displayName ? result.type.displayName : result.type
-      }` +
-      `\n\texpected: ${
-        expectedElement.type.displayName
-          ? expectedElement.type.displayName
-          : expectedElement.type
-      }`
-  );
+  if (result.type !== expectedElement.type) {
+    assert.fail(
+      `Component type doesn't match for ${pathName}` +
+        `\n\tactual:   ${
+          result.type.displayName ? result.type.displayName : result.type
+        }` +
+        `\n\texpected: ${
+          expectedElement.type.displayName
+            ? expectedElement.type.displayName
+            : expectedElement.type
+        }`
+    );
+  }
 
   Object.keys(expectedElement.props)
     .filter((p) => {
@@ -84,13 +84,13 @@ function assertComponentImpl(path, result, expectedElement) {
       );
     }
   } else {
-    assert.deepEqual(
-      children.length,
-      expectedChildren.length,
-      `Children count doesn't match for ${pathName}` +
-        `\n\tactual:   ${children.length}` +
-        `\n\texpected: ${expectedChildren.length}`
-    );
+    if (children.length !== expectedChildren.length) {
+      assert.fail(
+        `Children count doesn't match for ${pathName}` +
+          `\n\tactual:   ${children.length}` +
+          `\n\texpected: ${expectedChildren.length}`
+      );
+    }
 
     expectedChildren.forEach((expected, i) => {
       assertComponentImpl(pathName, children[i], expected);

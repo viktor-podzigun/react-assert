@@ -33,11 +33,13 @@ describe("assertComponent.test.mjs", () => {
     }
 
     //then
-    assert.deepEqual(
-      resError?.message,
-      "Attribute value doesn't match for p.testArr.0" +
-        "\n\tactual:   test1" +
-        "\n\texpected: test2"
+    assert.match(
+      resError?.message ?? "",
+      new RegExp(
+        "Attribute value doesn't match for p\\.testArr\\.0" +
+          "\n\tactual:   test1" +
+          "\n\texpected: test2"
+      )
     );
   });
 
@@ -62,11 +64,13 @@ describe("assertComponent.test.mjs", () => {
     }
 
     //then
-    assert.deepEqual(
-      resError?.message,
-      "Attribute value doesn't match for p.testObj.test" +
-        "\n\tactual:   1" +
-        "\n\texpected: 2"
+    assert.match(
+      resError?.message ?? "",
+      new RegExp(
+        "Attribute value doesn't match for p\\.testObj\\.test" +
+          "\n\tactual:   1" +
+          "\n\texpected: 2"
+      )
     );
   });
 
@@ -91,11 +95,13 @@ describe("assertComponent.test.mjs", () => {
     }
 
     //then
-    assert.deepEqual(
-      resError?.message,
-      "Attribute value doesn't match for p.testObj.test" +
-        "\n\tactual:   () => 1" +
-        "\n\texpected: undefined"
+    assert.match(
+      resError?.message ?? "",
+      new RegExp(
+        "Attribute value doesn't match for p\\.testObj\\.test" +
+          "\n\tactual:   \\(\\) => 1" +
+          "\n\texpected: undefined"
+      )
     );
   });
 
@@ -118,11 +124,13 @@ describe("assertComponent.test.mjs", () => {
     }
 
     //then
-    assert.deepEqual(
-      resError?.message,
-      "Attribute value doesn't match for p.disabled" +
-        "\n\tactual:   true" +
-        "\n\texpected: false"
+    assert.match(
+      resError?.message ?? "",
+      new RegExp(
+        "Attribute value doesn't match for p\\.disabled" +
+          "\n\tactual:   true" +
+          "\n\texpected: false"
+      )
     );
   });
 

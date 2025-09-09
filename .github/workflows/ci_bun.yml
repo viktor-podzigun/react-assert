@@ -13,24 +13,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Git checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v1
         with:
-          bun-version: "1.0.1"
+          bun-version: "1.2.0"
 
       - name: Cache Dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.bun/install/cache
             ~/work/react-assert/react-assert/bun.lockb
-          key: ${{ runner.os }}-bun-cache-v4-${{ hashFiles('package.json') }}
+          key: ${{ runner.os }}-bun-cache-v5-${{ hashFiles('package.json') }}
           restore-keys: |
-            ${{ runner.os }}-bun-cache-v4-
+            ${{ runner.os }}-bun-cache-v5-
 
       - name: Run tests
         run: |

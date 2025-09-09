@@ -1,9 +1,9 @@
 import React from "react";
 import TestRenderer from "react-test-renderer";
+import assert from "node:assert/strict";
 import { assertComponents } from "../index.mjs";
 import { TestComp, TestComp2 } from "./testComponents.mjs";
 
-import { strict as assert } from "node:assert";
 const { describe, it } = await (async () => {
   // @ts-ignore
   const module = process.isBun ? "bun:test" : "node:test";
