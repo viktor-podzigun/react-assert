@@ -28,6 +28,7 @@ import assert from "node:assert/strict";
 import mockFunction from "mock-fn";
 
 import {
+  actAsync,
   assertComponents,
   mockComponent,
   TestErrorBoundary,
@@ -96,6 +97,32 @@ describe("MyComponent", () => {
         <p className="my">{text}</p>
       </div>
     );
+  });
+
+  it("should render without warnings using actAsync", async () => {
+    //given
+    const Comp1 = mockComponent(TestComp);
+    const Comp2 = mockComponent(TestComp2);
+    const Comp = () => {
+      const [_, setState] = useState(0);
+      useLayoutEffect(() => {
+        Promise.resolve().then(() => {
+          setState(123);
+        });
+      }, []);
+
+      return h(Comp1, {}, h("div"), h(Comp2));
+    };
+
+    //when
+    const result = (
+      await actAsync(() => {
+        return TestRenderer.create(h(Comp));
+      })
+    ).root;
+
+    //then
+    assertComponents(result.children, h(Comp1, {}, h("div"), h(Comp2)));
   });
 
   it("should render error details if error during render", () => {

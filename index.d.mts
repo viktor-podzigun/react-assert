@@ -15,6 +15,8 @@ export function mockComponent<
   T = React.FunctionComponent<any> | React.ComponentClass<any>
 >(comp: T, name?: string): T;
 
+export function actAsync<T>(callback: () => T): Promise<T>;
+
 interface State {
   error?: object;
 }

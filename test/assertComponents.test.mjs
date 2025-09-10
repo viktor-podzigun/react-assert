@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useLayoutEffect, useState } from "react";
 import TestRenderer from "react-test-renderer";
 import assert from "node:assert/strict";
-import { assertComponents } from "../index.mjs";
+import { actAsync, assertComponents, mockComponent } from "../index.mjs";
 import { TestComp, TestComp2 } from "./testComponents.mjs";
 
 const { describe, it } = await (async () => {
@@ -62,5 +62,53 @@ describe("assertComponents.test.mjs", () => {
         "\n\tactual:   TestComp" +
         "\n\texpected: TestComp2"
     );
+  });
+
+  it("should not fail if components match", () => {
+    //given
+    const Comp1 = mockComponent(TestComp);
+    const Comp2 = mockComponent(TestComp2);
+    const Comp = () => {
+      return h(Comp1, {}, h("div"), h(Comp2));
+    };
+    const comp = TestRenderer.create(h(Comp)).root;
+    /** @type {Error?} */
+    let resError = null;
+
+    //when
+    try {
+      assertComponents(comp.children, h(Comp1, {}, h("div"), h(Comp2)));
+    } catch (error) {
+      resError = error;
+    }
+
+    //then
+    assert.deepEqual(resError, null);
+  });
+
+  it("should not fail if components match async", async () => {
+    //given
+    const Comp1 = mockComponent(TestComp);
+    const Comp2 = mockComponent(TestComp2);
+    const Comp = () => {
+      const [_, setState] = useState(0);
+      useLayoutEffect(() => {
+        Promise.resolve().then(() => {
+          setState(123);
+        });
+      }, []);
+
+      return h(Comp1, {}, h("div"), h(Comp2));
+    };
+
+    //when
+    const result = (
+      await actAsync(() => {
+        return TestRenderer.create(h(Comp));
+      })
+    ).root;
+
+    //then
+    assertComponents(result.children, h(Comp1, {}, h("div"), h(Comp2)));
   });
 });
