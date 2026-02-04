@@ -31,14 +31,14 @@ describe("testRenderer.test.mjs", () => {
     //then
     assert.deepEqual(
       resError?.message,
-      'No instances found with node type: "button"'
+      'No instances found with node type: "button"',
     );
   });
 
   it("should find nested simple component when findByType", () => {
     //given
     const comp = TestRenderer.create(
-      h(TestComp, {}, h(TestComp, {}, h("button", { show: true })))
+      h(TestComp, {}, h(TestComp, {}, h("button", { show: true }))),
     ).root;
 
     //when
@@ -51,7 +51,7 @@ describe("testRenderer.test.mjs", () => {
   it("should find nested react component when findByType", () => {
     //given
     const comp = TestRenderer.create(
-      h(TestComp, {}, h(TestComp2, { show: true }))
+      h(TestComp, {}, h(TestComp2, { show: true })),
     ).root;
 
     //when

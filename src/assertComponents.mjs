@@ -10,7 +10,7 @@ function assertComponents(results, ...expectedElements) {
     assert.fail(
       `Components count doesn't match` +
         `\n\tactual:   ${results.length}` +
-        `\n\texpected: ${expectedElements.length}`
+        `\n\texpected: ${expectedElements.length}`,
     );
   }
 

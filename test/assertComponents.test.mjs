@@ -35,7 +35,7 @@ describe("assertComponents.test.mjs", () => {
     //then
     assert.deepEqual(
       resError?.message,
-      "Components count doesn't match\n\tactual:   3\n\texpected: 2"
+      "Components count doesn't match\n\tactual:   3\n\texpected: 2",
     );
   });
 
@@ -60,7 +60,7 @@ describe("assertComponents.test.mjs", () => {
       resError?.message,
       "Component type doesn't match for p > TestComp2" +
         "\n\tactual:   TestComp" +
-        "\n\texpected: TestComp2"
+        "\n\texpected: TestComp2",
     );
   });
 

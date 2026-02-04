@@ -38,8 +38,8 @@ describe("assertComponent.test.mjs", () => {
       new RegExp(
         "Attribute value doesn't match for p\\.testArr\\.0" +
           "\n\tactual:   test1" +
-          "\n\texpected: test2"
-      )
+          "\n\texpected: test2",
+      ),
     );
   });
 
@@ -69,8 +69,8 @@ describe("assertComponent.test.mjs", () => {
       new RegExp(
         "Attribute value doesn't match for p\\.testObj\\.test" +
           "\n\tactual:   1" +
-          "\n\texpected: 2"
-      )
+          "\n\texpected: 2",
+      ),
     );
   });
 
@@ -100,8 +100,8 @@ describe("assertComponent.test.mjs", () => {
       new RegExp(
         "Attribute value doesn't match for p\\.testObj\\.test" +
           "\n\tactual:   \\(\\) => 1" +
-          "\n\texpected: undefined"
-      )
+          "\n\texpected: undefined",
+      ),
     );
   });
 
@@ -129,8 +129,8 @@ describe("assertComponent.test.mjs", () => {
       new RegExp(
         "Attribute value doesn't match for p\\.disabled" +
           "\n\tactual:   true" +
-          "\n\texpected: false"
-      )
+          "\n\texpected: false",
+      ),
     );
   });
 
@@ -155,7 +155,7 @@ describe("assertComponent.test.mjs", () => {
       resError?.message,
       "Element doesn't match for p > comp2" +
         "\n\tactual:   comp" +
-        "\n\texpected: comp2"
+        "\n\texpected: comp2",
     );
   });
 
@@ -180,7 +180,7 @@ describe("assertComponent.test.mjs", () => {
       resError?.message,
       "Component type doesn't match for comp2" +
         "\n\tactual:   comp" +
-        "\n\texpected: comp2"
+        "\n\texpected: comp2",
     );
   });
 
@@ -205,7 +205,7 @@ describe("assertComponent.test.mjs", () => {
       resError?.message,
       "Component type doesn't match for p > TestComp2" +
         "\n\tactual:   TestComp" +
-        "\n\texpected: TestComp2"
+        "\n\texpected: TestComp2",
     );
   });
 
@@ -230,7 +230,7 @@ describe("assertComponent.test.mjs", () => {
       resError?.message,
       "Children count doesn't match for p > hr" +
         "\n\tactual:   1" +
-        "\n\texpected: 2"
+        "\n\texpected: 2",
     );
   });
 
@@ -255,7 +255,7 @@ describe("assertComponent.test.mjs", () => {
       resError?.message,
       "Children count doesn't match for p" +
         "\n\tactual:   0" +
-        "\n\texpected: 1"
+        "\n\texpected: 1",
     );
   });
 
@@ -278,7 +278,7 @@ describe("assertComponent.test.mjs", () => {
     //then
     assert.deepEqual(
       resError?.message,
-      "Expected no children for p, but got: test_text,div,TestComp"
+      "Expected no children for p, but got: test_text,div,TestComp",
     );
   });
 
@@ -312,7 +312,7 @@ describe("assertComponent.test.mjs", () => {
           },
         }),
         h("div", {}, "child1"),
-        h("div", {}, "child2")
+        h("div", {}, "child2"),
       );
     };
     const comp = TestRenderer.create(h(Comp)).root.children[0];
@@ -346,8 +346,8 @@ describe("assertComponent.test.mjs", () => {
           },
         }),
         h("div", {}, "child1"),
-        h("div", {}, "child2")
-      )
+        h("div", {}, "child2"),
+      ),
     );
   });
 });

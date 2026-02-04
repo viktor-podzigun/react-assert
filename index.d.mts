@@ -3,7 +3,7 @@ import TestRenderer from "react-test-renderer";
 
 export function assertComponent(
   result: TestRenderer.ReactTestInstance | string,
-  expectedElement: React.ReactElement | string
+  expectedElement: React.ReactElement | string,
 ): void;
 
 export function assertComponents(
@@ -12,7 +12,7 @@ export function assertComponents(
 ): void;
 
 export function mockComponent<
-  T = React.FunctionComponent<any> | React.ComponentClass<any>
+  T = React.FunctionComponent<any> | React.ComponentClass<any>,
 >(comp: T, name?: string): T;
 
 export function actAsync<T>(callback: () => T): Promise<T>;

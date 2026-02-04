@@ -11,7 +11,7 @@ const TestComp = (props) => {
     {
       className: "test1",
     },
-    props.children
+    props.children,
   );
 };
 TestComp.displayName = "TestComp";
@@ -25,7 +25,7 @@ const TestComp2 = (props) => {
     {
       className: "test2",
     },
-    props.children
+    props.children,
   );
 };
 TestComp2.displayName = "TestComp2";

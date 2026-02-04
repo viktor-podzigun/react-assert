@@ -26,8 +26,8 @@ function assertComponentImpl(path, result, expectedElement) {
     typeof expectedElement === "string"
       ? expectedElement
       : expectedElement.type.displayName
-      ? expectedElement.type.displayName
-      : expectedElement.type;
+        ? expectedElement.type.displayName
+        : expectedElement.type;
 
   const pathName = path ? `${path} > ${name}` : Object(name).toString();
 
@@ -36,7 +36,7 @@ function assertComponentImpl(path, result, expectedElement) {
       assert.fail(
         `Element doesn't match for ${pathName}` +
           `\n\tactual:   ${result}` +
-          `\n\texpected: ${expectedElement}`
+          `\n\texpected: ${expectedElement}`,
       );
     }
     return;
@@ -52,7 +52,7 @@ function assertComponentImpl(path, result, expectedElement) {
           expectedElement.type.displayName
             ? expectedElement.type.displayName
             : expectedElement.type
-        }`
+        }`,
     );
   }
 
@@ -80,7 +80,7 @@ function assertComponentImpl(path, result, expectedElement) {
           : Object(child.type).toString();
       });
       assert.fail(
-        `Expected no children for ${pathName}, but got: ${resultChildren}`
+        `Expected no children for ${pathName}, but got: ${resultChildren}`,
       );
     }
   } else {
@@ -88,7 +88,7 @@ function assertComponentImpl(path, result, expectedElement) {
       assert.fail(
         `Children count doesn't match for ${pathName}` +
           `\n\tactual:   ${children.length}` +
-          `\n\texpected: ${expectedChildren.length}`
+          `\n\texpected: ${expectedChildren.length}`,
       );
     }
 
@@ -167,7 +167,7 @@ function assertAttrValue(name, resultValue, expectedValue) {
     expectedValue,
     `Attribute value doesn't match for ${name}` +
       `\n\tactual:   ${resultValue}` +
-      `\n\texpected: ${expectedValue}`
+      `\n\texpected: ${expectedValue}`,
   );
 }
 

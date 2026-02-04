@@ -19,7 +19,7 @@ describe("TestErrorBoundary.test.mjs", () => {
   it("should render children if no errors", () => {
     //when
     const result = TestRenderer.create(
-      h(TestErrorBoundary, null, "some child")
+      h(TestErrorBoundary, null, "some child"),
     ).root;
 
     //then
@@ -43,7 +43,7 @@ describe("TestErrorBoundary.test.mjs", () => {
 
     //when
     const result = TestRenderer.create(
-      h(TestErrorBoundary, null, h(ErrorComp))
+      h(TestErrorBoundary, null, h(ErrorComp)),
     ).root;
 
     //then
